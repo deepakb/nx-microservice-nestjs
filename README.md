@@ -1,82 +1,142 @@
-# NxMicroserviceNestjs
+# Nx Microservice Monorepo (NestJS, Prisma, GraphQL)
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+## Overview
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+This repository is a **monorepo** managed by [Nx](https://nx.dev/) for building scalable, modular backends using [NestJS](https://nestjs.com/), [Prisma](https://www.prisma.io/), and [GraphQL](https://graphql.org/). It is designed for rapid development, maintainability, and best practices in modern TypeScript backend engineering.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+---
 
-## Finish your CI setup
+## Features
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/MDO2Lw48yF)
+- **Monorepo with Nx**: Modular structure for apps and libraries, supporting scalable development.
+- **NestJS Backend**: Main server app using NestJS, structured with modules for users, authentication, and Prisma integration.
+- **GraphQL API**: Apollo Server integration with auto-generated schemas and playground.
+- **Prisma ORM**: Type-safe database access, migrations, and PostgreSQL support.
+- **Authentication**: JWT-based authentication with Passport.js strategies.
+- **Custom Libraries**: Shared code and GraphQL models in `libs/nestjs`.
+- **CI/CD**: GitHub Actions workflow for linting, testing, and building.
+- **Code Quality**: ESLint, Prettier, Husky, and lint-staged for consistent code style and pre-commit checks.
+- **Testing**: Jest for unit and integration tests.
 
+---
 
-## Run tasks
+## Project Structure
 
-To run the dev server for your app, use:
+```
+.
+├── apps/
+│   └── server/             # Main NestJS backend app
+│       ├── src/            # Application source code
+│       └── prisma/         # Prisma schema and migrations
+├── libs/
+│   └── nestjs/             # Shared NestJS libraries (GraphQL models, etc.)
+├── .github/workflows/      # CI/CD pipeline (GitHub Actions)
+├── package.json            # Root dependencies and scripts
+├── nx.json                 # Nx workspace configuration
+├── tsconfig.base.json      # Shared TypeScript config
+└── ...
+```
 
-```sh
+---
+
+## Main Tools & Technologies
+
+| Tool / Library     | Purpose                                 |
+| ------------------ | --------------------------------------- |
+| Nx                 | Monorepo management, task orchestration |
+| NestJS             | Modular backend framework               |
+| GraphQL / Apollo   | API layer, schema, playground           |
+| Prisma             | ORM, migrations, PostgreSQL integration |
+| Passport / JWT     | Authentication & authorization          |
+| Jest               | Testing framework                       |
+| ESLint, Prettier   | Code style and linting                  |
+| Husky, lint-staged | Pre-commit hooks for code quality       |
+| GitHub Actions     | CI/CD pipeline                          |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js v20+
+- PostgreSQL database
+
+### Install Dependencies
+
+```bash
+npm ci
+```
+
+### Environment Setup
+
+Create a `.env` file in `apps/server/` with at least:
+
+```
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+PORT=3333
+JWT_SECRET=your_secret
+```
+
+### Database Migration
+
+```bash
+npx nx run server:prisma migrate dev --name init
+```
+
+### Start Development Server
+
+```bash
 npx nx serve server
 ```
 
-To create a production bundle:
+The API will be available at `http://localhost:3333/api` and the GraphQL playground at `/api/graphql`.
 
-```sh
-npx nx build server
-```
+---
 
-To see all available targets to run for a project, run:
+## Project Structure Details
 
-```sh
-npx nx show project server
-```
+### apps/server
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+- `src/app/auth/` - Authentication module (JWT, guards, strategies)
+- `src/app/users/` - User management module
+- `src/app/prisma/` - Prisma service integration
+- `main.ts` - Application bootstrap, global pipes, config
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### libs/nestjs
 
-## Add new projects
+- `lib/graphql/` - Shared GraphQL models and types
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+---
 
-Use the plugin's generator to create new projects.
+## CI/CD
 
-To generate a new application, use:
+- GitHub Actions workflow in `.github/workflows/ci.yml` runs lint, test, and build on push and PRs.
+- Nx Cloud (optional) for distributed task execution.
 
-```sh
-npx nx g @nx/nest:app demo
-```
+---
 
-To generate a new library, use:
+## Contributing
 
-```sh
-npx nx g @nx/node:lib mylib
-```
+1. Fork the repo and create your branch from `main`.
+2. Run `npm ci` and ensure all checks pass (`npx nx run-many -t lint test build`).
+3. Submit a PR with clear description and context.
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+---
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## License
 
+[MIT](LICENSE)
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
 
-## Install Nx Console
+## Credits
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+- [NestJS](https://nestjs.com/)
+- [Prisma](https://www.prisma.io/)
+- [Nx](https://nx.dev/)
+- [GraphQL](https://graphql.org/)
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
 
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+_Last updated: 2025-08-15_
